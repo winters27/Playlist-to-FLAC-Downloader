@@ -55,7 +55,7 @@ python flacdownloader.py
 
 ## Exporting a Playlist from TuneMyMusic
 
-To use this script, you need a playlist file in the format "Artist - Song Title". If you sync a playlist to TuneMyMusic and export that playlist as a .txt, the format will be what you need:
+To use this script, you need a playlist file in the format "Artist - Song Title". If you sync a playlist to TuneMyMusic and export that playlist as a .txt (FREE), the format will be what you need:
 
 1. Visit [TuneMyMusic](https://www.tunemymusic.com/).
 
@@ -67,7 +67,7 @@ To use this script, you need a playlist file in the format "Artist - Song Title"
 
 5. Look for an option to export the playlist. It's usually labeled as "Export," "Save," or "Download."
 
-6. Choose the export format as plain text or CSV, which will give you a file with the "Artist - Song Title" format.
+6. Choose the export format as plain text (.txt), which will give you a file with the "Artist - Song Title" format.
 
 7. Save the exported playlist file to your computer.
 
