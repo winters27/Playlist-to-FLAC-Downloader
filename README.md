@@ -39,7 +39,7 @@ Make sure you have Mozilla Firefox installed and download the [GeckoDriver](http
 1. Run the script using Python:
 
 ```bash
-python your_script_name.py
+python flacdownloader.py
 ```
 
 2. The script will open a graphical user interface (GUI) using CustomTkinter.
