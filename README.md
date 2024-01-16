@@ -1,6 +1,6 @@
 # Playlist to FLAC Downloader / Converter
 
-This Python script allows you to download songs from a playlist in Lossless FLAC format using Selenium.
+This Python script allows you to download songs from a playlist in Lossless FLAC format using Selenium and the CapSolver API to automate the solving of CAPTCHAs.
 
 ![alt text](https://files.catbox.moe/gzo64v.png)
 
