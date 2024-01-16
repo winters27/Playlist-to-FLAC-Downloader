@@ -2,6 +2,8 @@
 
 This Python script allows you to download songs from a playlist in Lossless FLAC format using Selenium.
 
+![alt text](https://files.catbox.moe/gzo64v.png)
+
 ## Table of Contents
 - [Requirements](#requirements)
 - [Installation](#installation)
