@@ -89,6 +89,8 @@ To use CapSolver for solving CAPTCHAs with this script, you'll need a CapSolver 
 
 5. Paste your API Key into the "CapSolver API Key" field in the script's GUI.
 
+* Currently, the rate for solving reCAPTCHAV2 is $0.8 / 1000 solves.
+
 Now, you're ready to use CapSolver with the script to automatically solve CAPTCHAs during the download process.
 
 ## Contributing
