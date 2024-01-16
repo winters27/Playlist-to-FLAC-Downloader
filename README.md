@@ -90,6 +90,7 @@ To use CapSolver for solving CAPTCHAs with this script, you'll need a CapSolver 
 5. Paste your API Key into the "CapSolver API Key" field in the script's GUI.
 
 * Currently, the rate for solving reCAPTCHAV2 is $0.8 / 1000 solves.
+* If you want to use the project but do not have the ability to add money to a CapSolver account, feel free to message me on (https://discordapp.com/users/681989594341834765 "Discord") and I will sponsor your session for a star (:
 
 Now, you're ready to use CapSolver with the script to automatically solve CAPTCHAs during the download process.
 
