@@ -36,13 +36,13 @@ Make sure you have Mozilla Firefox installed and download the [GeckoDriver](http
 ## Usage
 
 > [!CAUTION]
-> Threading in Application: This application utilizes multi-threading to enhance performance and efficiency, especially when handling multiple downloads simultaneously. It's important to be aware of how threading is used and how it can be adjusted to suit your needs and system capabilities.
+> This script utilizes multi-threading to enhance performance and efficiency, especially when handling multiple downloads simultaneously. It's important to be aware of how threading is used and how it can be adjusted to suit your needs and system capabilities.
 
 ### Thread Count: 
 The script currently sets a maximum number of threads (MAX_THREADS) which determines how many download processes can run concurrently. While a higher number of threads can increase download speed, it also increases the load on your system which can lead to performance issues or instability, especially on computers with limited resources.
 
 ### Modifying Thread Count:
-If you find that the application is running slowly or causing system instability, consider reducing the number of threads. Conversely, if you have a powerful machine and want to increase download speeds, you may increase the thread count. This setting is found in the MAX_THREADS constant at the top of the script.
+If you find that the script is running slowly or causing system instability, consider reducing the number of threads. Conversely, if you have a powerful machine and want to increase download speeds, you may increase the thread count. This setting is found in the MAX_THREADS constant at the top of the script.
 ```bash
 MAX_THREADS = 5  # Example: Change this number to increase or decrease threads
 ```
