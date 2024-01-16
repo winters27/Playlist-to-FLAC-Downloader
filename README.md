@@ -47,6 +47,8 @@ If you find that the script is running slowly or causing system instability, con
 MAX_THREADS = 5  # Example: Change this number to increase or decrease threads
 ```
 
+### Run the Script
+
 1. Run the script using Python:
 
 ```bash
@@ -103,7 +105,7 @@ To use CapSolver for solving CAPTCHAs with this script, you'll need a CapSolver 
 
 > [!NOTE]
 > Currently, the rate for solving reCAPTCHAV2 is $0.8 / 1000 solves.
-> If you want to use the project but do not have the ability to add money to a CapSolver account, feel free to message me on [Discord](https://discordapp.com/users/681989594341834765) and I will sponsor your session for a star (:
+> If you want to use the project but do not have the ability to add money to a CapSolver account, feel free to message me on [Discord](https://discordapp.com/users/681989594341834765) and I will sponsor your session in exchange for a :star: - :wink:
 
 Now, you're ready to use CapSolver with the script to automatically solve CAPTCHAs during the download process.
 
