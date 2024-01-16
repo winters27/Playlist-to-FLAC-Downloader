@@ -1,6 +1,6 @@
 # Playlist to FLAC Downloader / Converter
 
-This Python script allows you to download songs from a playlist in Lossless FLAC format from the website [free-mp3-download.net](https://free-mp3-download.net/) using Selenium.
+This Python script allows you to download songs from a playlist in Lossless FLAC format using Selenium.
 
 ## Table of Contents
 - [Requirements](#requirements)
