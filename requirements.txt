@@ -1,0 +1,9 @@
+tkinter
+tk
+customtkinter
+selenium
+colorama
+requests
+beautifulsoup4
+tqdm
+mutagen
