@@ -1,4 +1,4 @@
-# Playlist to FLAC Downloader / Converter
+# Free Playlist to FLAC Downloader / Converter
 
 This Python script allows you to download songs from a playlist in Lossless FLAC format. Features a modern, janky GUI with playlist and search functionality.
 
