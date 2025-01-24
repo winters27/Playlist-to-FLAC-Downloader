@@ -1,9 +1,5 @@
-tkinter
-tk
-customtkinter
-selenium
-colorama
-requests
-beautifulsoup4
-tqdm
-mutagen
+requests==2.31.0
+customtkinter==5.2.1
+colorama==0.4.6
+Pillow==10.1.0
+mutagen==1.47.0
