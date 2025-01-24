@@ -13,6 +13,9 @@ import tkinter as tk
 from colorama import Fore, Back, Style, init
 import json
 import re
+from mutagen.flac import FLAC, Picture
+from PIL import Image
+from io import BytesIO
 
 # Constants
 MAX_WAIT_TIME = 25  # seconds
@@ -104,19 +107,16 @@ def download_song(artist, song):
         try:
             time.sleep(1)
             search_url = f"{service_url}/api/get-music?q={song}%20-%20{artist}&offset=0"
+            print(f"\nSearching URL: {search_url}")
             response = requests.get(search_url, timeout=10)
             response.raise_for_status()
             
             data = response.json()['data']
             tracks = []
             if 'most_popular' in data:
-                most_popular_tracks = [item['content'] for item in data['most_popular'].get('items', [])
-                                     if item.get('type') == 'tracks']
-                tracks.extend(most_popular_tracks)
+                tracks = [item['content'] for item in data['most_popular'].get('items', [])
+                         if item.get('type') == 'tracks']
             
-            if 'tracks' in data:
-                tracks.extend(data['tracks'].get('items', []))
-
             if not tracks:
                 raise ValueError("No tracks found")
 
@@ -134,9 +134,10 @@ def download_song(artist, song):
             if not track_id:
                 raise ValueError("Track ID not found")
                 
-            # Get the streaming URL
             download_url = f"{service_url}/api/download-music?track_id={track_id}&quality=27"
-            download_response = requests.get(download_url, timeout=10)
+            print(f"\nDownload URL: {download_url}")
+            
+            download_response = requests.get(download_url, stream=True, timeout=30)
             download_response.raise_for_status()
             
             streaming_data = download_response.json()
@@ -146,15 +147,19 @@ def download_song(artist, song):
             streaming_url = streaming_data['data']['url']
             print(f"\nStreaming URL obtained, downloading...")
             
-            # Download from streaming URL
             stream_response = requests.get(streaming_url, stream=True, timeout=30)
             stream_response.raise_for_status()
             
-            filename = f"{artist} - {song}.flac"
+            real_artist = track.get('performer', {}).get('name', artist)
+            real_title = track.get('title', song).replace(" (Explicit Version)", "").replace(" (Album Version)", "")
+            real_artist = re.sub(r'[<>:"/\\|?*]', '', real_artist)
+            real_title = re.sub(r'[<>:"/\\|?*]', '', real_title)
+            
+            filename = f"{real_artist} - {real_title}.flac"
             filepath = os.path.join(app.download_directory, filename)
             
             total_size = int(stream_response.headers.get('content-length', 0))
-            if total_size < 1000000:  # Less than 1MB
+            if total_size < 1000000:
                 raise ValueError("File size too small for a FLAC file")
 
             with open(filepath, 'wb') as f:
@@ -167,10 +172,72 @@ def download_song(artist, song):
                             progress = (downloaded_size / total_size) * 100
                             print(f"\rDownloading {filename}: {progress:.1f}%", end='')
 
-            actual_size = os.path.getsize(filepath)
-            if actual_size < 1000000:
-                os.remove(filepath)
-                raise ValueError(f"Downloaded file too small ({actual_size} bytes)")
+            try:
+                audio = FLAC(filepath)
+                
+                # Basic metadata
+                audio['title'] = real_title
+                audio['artist'] = real_artist
+                
+                # Album metadata
+                if track.get('album'):
+                    audio['album'] = track['album'].get('title', '')
+                    audio['date'] = str(track['album'].get('release_date_original', ''))
+                    if track['album'].get('label'):
+                        audio['label'] = track['album']['label'].get('name', '')
+                    if track['album'].get('genre'):
+                        audio['genre'] = track['album']['genre'].get('name', '')
+                    if track['album'].get('upc'):
+                        audio['upc'] = track['album'].get('upc', '')
+                
+                # Track metadata
+                if track.get('isrc'):
+                    audio['isrc'] = track['isrc']
+                if track.get('track_number'):
+                    audio['tracknumber'] = str(track['track_number'])
+                if track.get('disc_number'):
+                    audio['discnumber'] = str(track['disc_number'])
+                if track.get('duration'):
+                    audio['length'] = str(track['duration'])
+                if track.get('copyright'):
+                    audio['copyright'] = track['copyright']
+                if track.get('composer'):
+                    audio['composer'] = track['composer'].get('name', '')
+                if track.get('performers'):
+                    audio['performers'] = track['performers']
+                
+                # Technical metadata
+                if track.get('maximum_bit_depth'):
+                    audio['bit_depth'] = str(track['maximum_bit_depth'])
+                if track.get('maximum_sampling_rate'):
+                    audio['sample_rate'] = str(track['maximum_sampling_rate'])
+                if track.get('maximum_channel_count'):
+                    audio['channels'] = str(track['maximum_channel_count'])
+                
+                # Album Art (highest quality available)
+                if track['album'].get('image'):
+                    img_url = None
+                    for size in ['large', 'extralarge', 'mega']:
+                        if track['album']['image'].get(size):
+                            img_url = track['album']['image'][size]
+                            break
+                    
+                    if img_url:
+                        img_response = requests.get(img_url)
+                        img_response.raise_for_status()
+                        
+                        picture = Picture()
+                        picture.type = 3
+                        picture.mime = "image/jpeg"
+                        picture.desc = "Cover"
+                        picture.data = img_response.content
+                        
+                        audio.clear_pictures()
+                        audio.add_picture(picture)
+                
+                audio.save()
+            except Exception as e:
+                print(f"\nError adding metadata: {e}")
 
             print(f"{Fore.LIGHTGREEN_EX}\nDownloaded: {filename}")
             with lock:
@@ -179,8 +246,7 @@ def download_song(artist, song):
             return True
 
         except requests.exceptions.HTTPError as e:
-            print(f"{Fore.RED}\nHTTP Error {e.response.status_code}")
-            print("Response:", e.response.text)
+            print(f"{Fore.RED}\nHTTP Error: {str(e)}")
             if attempt < max_retries - 1:
                 time.sleep(retry_delay * (attempt + 1))
                 continue
