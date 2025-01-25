@@ -19,13 +19,15 @@ Before using this script, make sure you have the following requirements installe
 - Requests
 - CustomTkinter
 - Colorama
+- Pillow
+- Mutagen
 
 ## Installation
 
 You can install the required Python modules using the following command:
 
 ```bash
-pip install requests customtkinter colorama
+pip install requests customtkinter colorama pillow mutagen
 ```
 
 ## Usage
